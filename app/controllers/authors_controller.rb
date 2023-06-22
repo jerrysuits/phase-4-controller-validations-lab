@@ -5,12 +5,15 @@ class AuthorsController < ApplicationController
 
     render json: author
   end
-
   def create
     author = Author.create(author_params)
-
-    render json: author, status: :created
+    if author.persisted?
+      render json: author, status: :created
+    else
+      render json: { errors: author.errors }, status: :unprocessable_entity
+    end
   end
+  
 
   private
   
